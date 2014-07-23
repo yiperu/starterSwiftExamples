@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
                             
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,19 @@ class FirstViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    
+    // ========== Implementacion de los Metodos Tablas
+    func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
+        return ObjetoAdmin.notas.count
+    }
+    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+        let cell: UITableViewCell = UITableViewCell(style:UITableViewCellStyle.Subtitle, reuseIdentifier: "prueba")
+    
+        cell.text = ObjetoAdmin.notas[indexPath.row].s_nombre
+        cell.detailTextLabel.text = ObjetoAdmin.notas[indexPath.row].s_descrip
+    
+        return cell
+    }
+    
 }
 
