@@ -9,10 +9,18 @@
 import UIKit
 
 class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-                            
+    
+    
+    @IBOutlet var tablaNotas: UITableView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        tablaNotas.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,6 +41,14 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
         return cell
     }
+    func tableView(tableView: UITableView!, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath!){
+        if(editingStyle == UITableViewCellEditingStyle.Delete){
+            println("Eliminar nota")
+            ObjetoAdmin.notas.removeAtIndex(indexPath.row)
+            tablaNotas.reloadData()
+        }
+    }
+
     
 }
 

@@ -14,9 +14,13 @@ class SecondViewController: UIViewController, UITextFieldDelegate  {
     @IBOutlet var txtDescripcion: UITextField!  // el ! no es necesario
     
     @IBAction func btnAgregar(sender: UIButton) {
-        NSLog("Hizo Click ;-)")
-        println("Click con Println")
-        
+//        NSLog("Hizo Click ;-)")
+//        println("Click con Println")
+        ObjetoAdmin.agregarNotas(txtNombre.text, descripcion: txtDescripcion.text)
+        self.view.endEditing(true)
+        txtNombre.text = ""
+        txtDescripcion.text = ""
+        self.tabBarController.selectedIndex = 0
     }
     
     override func viewDidLoad() {
