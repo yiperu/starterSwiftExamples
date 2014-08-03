@@ -8,9 +8,15 @@
 
 //import Foundation
 import UIKit
+
 class Main: UIViewController {
+    
     // Declaracion del view Caja
     var cajaAzul: UIView?
+    
+    // Declaramos la variables que daran los comportamientos fisicos
+    var animador: UIDynamicAnimator?
+    var gravedad: UIGravityBehavior?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +32,16 @@ class Main: UIViewController {
         
         // Agregar a la vista principal
         self.view.addSubview(self.cajaAzul);
+        
+        // Instanciar el animador
+        self.animador = UIDynamicAnimator(referenceView: self.view);
+        
+        // Instanciar el comportamiento de la gravedad y asignar la caja a esto:
+        self.gravedad = UIGravityBehavior(items: [self.cajaAzul!]);
+        
+        // Aqui vamos
+        // Esto le da el comportamiento de gravedad a la caja azul
+        self.animador!.addBehavior(self.gravedad);
         
     }
 }
