@@ -91,7 +91,11 @@ class Main: UIViewController {
             
             self.animador!.removeAllBehaviors();
             
-            
+            var itemBehavior = UIDynamicItemBehavior(items: [self.cajaAzul!]);
+            itemBehavior.addLinearVelocity(pan.velocityInView(self.view), forItem: self.cajaAzul)
+            itemBehavior.angularResistance = 0;
+            itemBehavior.elasticity = 0.8;
+            self.animador!.addBehavior(itemBehavior);
             
             
             // Manejo de lo que deveira pasar si la caja es relanzada
