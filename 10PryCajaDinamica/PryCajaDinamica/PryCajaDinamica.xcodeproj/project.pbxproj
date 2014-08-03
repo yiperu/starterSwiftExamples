@@ -74,9 +74,9 @@
 			isa = PBXGroup;
 			children = (
 				1E609A0B198EBAD600BF8CE1 /* AppDelegate.swift */,
+				1E609A23198EBAF400BF8CE1 /* Main.swift */,
 				1E609A0D198EBAD600BF8CE1 /* Images.xcassets */,
 				1E609A09198EBAD600BF8CE1 /* Supporting Files */,
-				1E609A23198EBAF400BF8CE1 /* Main.swift */,
 			);
 			path = PryCajaDinamica;
 			sourceTree = "<group>";
