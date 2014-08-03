@@ -13,6 +13,7 @@ class Main: UIViewController {
     
     // Declaracion del view Caja
     var cajaAzul: UIView?
+    var cajaRoja: UIView? // Adicionamos una caja Roja
     
     // Declaramos la variables que daran los comportamientos fisicos
     var animador: UIDynamicAnimator?
@@ -41,6 +42,14 @@ class Main: UIViewController {
         // Agregar a la vista principal
         self.view.addSubview(self.cajaAzul);
         
+        // Implementamos la caja roja
+        self.cajaRoja = UIView();
+        self.cajaRoja!.backgroundColor = UIColor.redColor();
+        self.cajaRoja!.frame = CGRectMake(CGRectGetMidX(self.view.frame)-50, CGRectGetMidY(self.view.frame) + 150, 100, 40);
+        self.view.addSubview(self.cajaRoja);
+        // ---------------
+        
+        
         // Instanciar el animador
         self.animador = UIDynamicAnimator(referenceView: self.view);
         
@@ -48,7 +57,7 @@ class Main: UIViewController {
         self.gravedad = UIGravityBehavior(items: [self.cajaAzul!]);
         
         // Instanciamos el comportamiento de la colision y asignamos la caja a este
-        self.colision = UICollisionBehavior(items: [self.cajaAzul!]);
+        self.colision = UICollisionBehavior(items: [self.cajaAzul!, self.cajaRoja!]);
         self.colision!.translatesReferenceBoundsIntoBoundary = true;
         
         /*
