@@ -17,6 +17,8 @@ class Main: UIViewController {
     // Declaramos la variables que daran los comportamientos fisicos
     var animador: UIDynamicAnimator?
     var gravedad: UIGravityBehavior?
+    // Variable para la base donde hara la colision
+    var colision: UICollisionBehavior?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,9 +41,16 @@ class Main: UIViewController {
         // Instanciar el comportamiento de la gravedad y asignar la caja a esto:
         self.gravedad = UIGravityBehavior(items: [self.cajaAzul!]);
         
+        // Instanciamos el comportamiento de la colision y asignamos la caja a este
+        self.colision = UICollisionBehavior(items: [self.cajaAzul!]);
+        self.colision!.translatesReferenceBoundsIntoBoundary = true;
+        
+        
         // Aqui vamos
         // Esto le da el comportamiento de gravedad a la caja azul
         self.animador!.addBehavior(self.gravedad);
+        // Esto le da el comportamientos de colicion a la base
+        self.animador!.addBehavior(self.colision);
         
     }
 }
