@@ -13,6 +13,7 @@
 		1E54634A197F74010057A69F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E546348197F74010057A69F /* Main.storyboard */; };
 		1E54634C197F74010057A69F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E54634B197F74010057A69F /* Images.xcassets */; };
 		1E546358197F74010057A69F /* PryNotasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E546357197F74010057A69F /* PryNotasTests.swift */; };
+		1E546366197F74EE0057A69F /* AdministradorNotas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E546365197F74EE0057A69F /* AdministradorNotas.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +25,13 @@
 			remoteInfo = PryNotas;
 		};
 		1E546361197F74210057A69F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E546335197F74010057A69F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1E54633C197F74010057A69F;
+			remoteInfo = PryNotas;
+		};
+		1E546363197F74210057A69F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1E546335197F74010057A69F /* Project object */;
 			proxyType = 1;
@@ -43,6 +51,7 @@
 		1E546351197F74010057A69F /* PryNotasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PryNotasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E546356197F74010057A69F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E546357197F74010057A69F /* PryNotasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PryNotasTests.swift; sourceTree = "<group>"; };
+		1E546365197F74EE0057A69F /* AdministradorNotas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdministradorNotas.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +96,7 @@
 				1E546342197F74010057A69F /* AppDelegate.swift */,
 				1E546344197F74010057A69F /* FirstViewController.swift */,
 				1E546346197F74010057A69F /* SecondViewController.swift */,
+				1E546365197F74EE0057A69F /* AdministradorNotas.swift */,
 				1E546348197F74010057A69F /* Main.storyboard */,
 				1E54634B197F74010057A69F /* Images.xcassets */,
 				1E546340197F74010057A69F /* Supporting Files */,
@@ -152,6 +162,7 @@
 			dependencies = (
 				1E546353197F74010057A69F /* PBXTargetDependency */,
 				1E546362197F74210057A69F /* PBXTargetDependency */,
+				1E546364197F74210057A69F /* PBXTargetDependency */,
 			);
 			name = PryNotasTests;
 			productName = PryNotasTests;
@@ -169,6 +180,7 @@
 				TargetAttributes = {
 					1E54633C197F74010057A69F = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = W4G9N7UD83;
 					};
 					1E546350197F74010057A69F = {
 						CreatedOnToolsVersion = 6.0;
@@ -220,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E546347197F74010057A69F /* SecondViewController.swift in Sources */,
+				1E546366197F74EE0057A69F /* AdministradorNotas.swift in Sources */,
 				1E546343197F74010057A69F /* AppDelegate.swift in Sources */,
 				1E546345197F74010057A69F /* FirstViewController.swift in Sources */,
 			);
@@ -245,6 +258,11 @@
 			isa = PBXTargetDependency;
 			target = 1E54633C197F74010057A69F /* PryNotas */;
 			targetProxy = 1E546361197F74210057A69F /* PBXContainerItemProxy */;
+		};
+		1E546364197F74210057A69F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1E54633C197F74010057A69F /* PryNotas */;
+			targetProxy = 1E546363197F74210057A69F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -343,6 +361,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = PryNotas/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -354,6 +373,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = PryNotas/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
