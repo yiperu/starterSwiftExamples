@@ -16,6 +16,9 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        // -----
+        self.physicsWorld.gravity = CGVectorMake(0.0, -5.0)
+        
         skyColor = SKColor(red:113.0/255.0, green: 197.0/255.0, blue:207.0/255.0, alpha: 1.0);
         self.backgroundColor = skyColor;
         
