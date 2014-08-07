@@ -23,8 +23,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let wordCategory:UInt32 = 1 << 1
     let pipeCategory:UInt32 = 1 << 2
     
+    var moving = SKNode()
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        // IMplementaremos la caida del ave cuando exista alguna colision
+        self.addChild(moving)
         
         // ----- Esto genera una gravedad a  (mfe)
         self.physicsWorld.gravity = CGVectorMake(0.0, -5.0)
@@ -72,7 +76,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             var sprite = SKSpriteNode(texture: groundTexture)
             sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2)
             sprite.runAction(moveGroundSpritesForever)
-            self.addChild(sprite)
+            //self.addChild(sprite)
+            moving.addChild(sprite)
         }
         
         // Generamos el piso para que el ave no se desaparesca cuando caiga
@@ -99,7 +104,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             sprite.zPosition = -20
             sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2 + groundTexture.size().height)
             sprite.runAction(moveSkylineSpritesForever)
-            self.addChild(sprite)
+            // self.addChild(sprite)  // Cambiado para la el efecto de caida
+            moving.addChild(sprite)
         }
         
         // Implementamos aqui lo Pipes:
@@ -154,7 +160,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // pipePair.runAction(moveAndRemovePipes) // Creo que esto esta mal
         pipePair.runAction(movePipesAndRemove)
-        self.addChild(pipePair)
+        //self.addChild(pipePair)
+        moving.addChild(pipePair)
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -162,6 +169,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Aqui controla mos los otuch en el screeen
         bird.physicsBody.velocity = CGVectorMake(0, 0)
         bird.physicsBody.applyImpulse(CGVectorMake(0, 8))
+        
+        
     }
    
     // Implementaremos la rotacion del ave cuando se eleve, para esto tenemos que implementar una funcion que devuelva el max o min valor
@@ -185,16 +194,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Ahora implementamos el contex notificacion delegate
     func didBeginContact (contact: SKPhysicsContact!){
-        self.removeActionForKey("flash")
-        var turnBackgroundRed = SKAction.runBlock({() in self.setBackgroundRed()})
-        var wait = SKAction.waitForDuration(0.05)
-        var turnBackgroundWhite = SKAction.runBlock({() in self.setBackgroundWhite()})
-        var turnBackgroundColorSky = SKAction.runBlock({() in self.setBackgroundColorSky()})
         
-        // Implementamos el efecto del explosion de fondo con luces
-        var sequenceOfActions = SKAction.sequence([turnBackgroundRed, wait, turnBackgroundWhite, wait, turnBackgroundColorSky])
-        var repeatSequence = SKAction.repeatAction(sequenceOfActions, count: 4)
-        self.runAction(repeatSequence, withKey: "flash")
+        if(moving.speed > 0){
+            moving.speed = 0
+            
+            self.removeActionForKey("flash")
+            var turnBackgroundRed = SKAction.runBlock({() in self.setBackgroundRed()})
+            var wait = SKAction.waitForDuration(0.05)
+            var turnBackgroundWhite = SKAction.runBlock({() in self.setBackgroundWhite()})
+            var turnBackgroundColorSky = SKAction.runBlock({() in self.setBackgroundColorSky()})
+            
+            // Implementamos el efecto del explosion de fondo con luces
+            var sequenceOfActions = SKAction.sequence([turnBackgroundRed, wait, turnBackgroundWhite, wait, turnBackgroundColorSky])
+            var repeatSequence = SKAction.repeatAction(sequenceOfActions, count: 4)
+            self.runAction(repeatSequence, withKey: "flash")
+        }
     
     }
     
