@@ -91,12 +91,28 @@ class GameScene: SKScene {
         // Aqui controla mos los otuch en el screeen
         bird.physicsBody.velocity = CGVectorMake(0, 0)
         bird.physicsBody.applyImpulse(CGVectorMake(0, 8))
-        
-
-        
     }
    
+    // Implementaremos la rotacion del ave cuando se eleve, para esto tenemos que implementar una funcion que devuelva el max o min valor
+    
+    func clamp (min: CGFloat, max: CGFloat, value: CGFloat) -> CGFloat {
+        if(value  > max){
+            return max
+        } else if (value < min) {
+            return min
+        } else {
+            return value
+        }
+    }
+    
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        // Aqui implementamos la rotacion en si:
+        bird.zRotation = self.clamp(-1, max: 0.5, value: bird.physicsBody.velocity.dy * (bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001))
     }
+    
+    
+    
+    
 }
