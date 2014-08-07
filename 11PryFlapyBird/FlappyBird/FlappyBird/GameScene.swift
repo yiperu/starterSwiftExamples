@@ -16,7 +16,7 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        // -----
+        // ----- Esto genera una gravedad a  (mfe)
         self.physicsWorld.gravity = CGVectorMake(0.0, -5.0)
         
         skyColor = SKColor(red:113.0/255.0, green: 197.0/255.0, blue:207.0/255.0, alpha: 1.0);
@@ -88,6 +88,9 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
+        // Aqui controla mos los otuch en el screeen
+        bird.physicsBody.velocity = CGVectorMake(0, 0)
+        bird.physicsBody.applyImpulse(CGVectorMake(0, 8))
         
 
         
