@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var bird = SKSpriteNode();
     var skyColor = SKColor();
@@ -19,12 +19,18 @@ class GameScene: SKScene {
     var pipeTexture2 = SKTexture();
     var movePipesAndRemove = SKAction()
     
+    let birdCategory:UInt32 = 1 << 0
+    let wordCategory:UInt32 = 1 << 1
+    let pipeCategory:UInt32 = 1 << 2
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
         // ----- Esto genera una gravedad a  (mfe)
         self.physicsWorld.gravity = CGVectorMake(0.0, -5.0)
+        // -- para el efecto de lus de fondo
+        self.physicsWorld.contactDelegate = self
+        
         
         skyColor = SKColor(red:113.0/255.0, green: 197.0/255.0, blue:207.0/255.0, alpha: 1.0);
         self.backgroundColor = skyColor;
@@ -45,6 +51,10 @@ class GameScene: SKScene {
         bird.physicsBody = SKPhysicsBody(circleOfRadius:bird.size.height / 2.0)
         bird.physicsBody.dynamic = true
         bird.physicsBody.allowsRotation =  false
+        
+        bird.physicsBody.categoryBitMask = birdCategory
+        bird.physicsBody.collisionBitMask = wordCategory | pipeCategory
+        bird.physicsBody.contactTestBitMask = wordCategory | pipeCategory
         
         self.addChild(bird)
         
@@ -70,6 +80,8 @@ class GameScene: SKScene {
         dummy.position = CGPointMake(0, groundTexture.size().height / 2)
         dummy.physicsBody = SKPhysicsBody(rectangleOfSize:CGSizeMake(self.frame.size.width, groundTexture.size().height))
         dummy.physicsBody.dynamic = false
+        dummy.physicsBody.categoryBitMask = wordCategory
+        
         self.addChild(dummy)
         
         
@@ -128,12 +140,16 @@ class GameScene: SKScene {
         pipe1.position = CGPointMake(0.0, CGFloat(y))
         pipe1.physicsBody = SKPhysicsBody(rectangleOfSize: pipe1.size)
         pipe1.physicsBody.dynamic = false
+        pipe1.physicsBody.categoryBitMask = pipeCategory
+        pipe1.physicsBody.contactTestBitMask = birdCategory
         pipePair.addChild(pipe1)
         
         var pipe2 = SKSpriteNode(texture: pipeTexture2)
         pipe2.position = CGPointMake(0.0, CGFloat(y) + pipe1.size.height + CGFloat(verticalPipeGap))
         pipe2.physicsBody = SKPhysicsBody(rectangleOfSize: pipe2.size)
         pipe2.physicsBody.dynamic = false
+        pipe2.physicsBody.categoryBitMask = pipeCategory
+        pipe2.physicsBody.contactTestBitMask = birdCategory
         pipePair.addChild(pipe2)
         
         // pipePair.runAction(moveAndRemovePipes) // Creo que esto esta mal
@@ -166,6 +182,46 @@ class GameScene: SKScene {
         // Aqui implementamos la rotacion en si:
         bird.zRotation = self.clamp(-1, max: 0.5, value: bird.physicsBody.velocity.dy * (bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001))
     }
+    
+    // Ahora implementamos el contex notificacion delegate
+    func didBeginContact (contact: SKPhysicsContact!){
+        self.removeActionForKey("flash")
+        var turnBackgroundRed = SKAction.runBlock({() in self.setBackgroundRed()})
+        var wait = SKAction.waitForDuration(0.05)
+        var turnBackgroundWhite = SKAction.runBlock({() in self.setBackgroundWhite()})
+        var turnBackgroundColorSky = SKAction.runBlock({() in self.setBackgroundColorSky()})
+        
+        // Implementamos el efecto del explosion de fondo con luces
+        var sequenceOfActions = SKAction.sequence([turnBackgroundRed, wait, turnBackgroundWhite, wait, turnBackgroundColorSky])
+        var repeatSequence = SKAction.repeatAction(sequenceOfActions, count: 4)
+        self.runAction(repeatSequence, withKey: "flash")
+    
+    }
+    
+    func setBackgroundRed(){
+        self.backgroundColor = UIColor.redColor()
+    }
+    
+    func setBackgroundWhite(){
+        self.backgroundColor = UIColor.whiteColor()
+    }
+    
+    func setBackgroundColorSky(){
+        self.backgroundColor = SKColor(red:113.0/255.0, green: 197.0/255.0, blue:207.0/255.0, alpha: 1.0)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
