@@ -55,6 +55,14 @@ class GameScene: SKScene {
             self.addChild(sprite)
         }
         
+        // Generamos el piso para que el ave no se desaparesca cuando caiga
+        var dummy = SKNode()
+        dummy.position = CGPointMake(0, groundTexture.size().height / 2)
+        dummy.physicsBody = SKPhysicsBody(rectangleOfSize:CGSizeMake(self.frame.size.width, groundTexture.size().height))
+        dummy.physicsBody.dynamic = false
+        self.addChild(dummy)
+        
+        
         // Creamos la parte de fondo que se ve a lo lejos
         var skylineTexture = SKTexture(imageNamed:"Skyline")
         skylineTexture.filteringMode = SKTextureFilteringMode.Nearest
