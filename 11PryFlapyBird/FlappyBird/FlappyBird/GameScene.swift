@@ -37,7 +37,7 @@ class GameScene: SKScene {
         var groundTexture = SKTexture(imageNamed:"Ground")
         groundTexture.filteringMode = SKTextureFilteringMode.Nearest
         
-        // HAremos que el fondo simule movimiento:
+        // HAremos que el fondo simule movimiento del los edificios:
         var moveGroundSprite = SKAction.moveByX(-groundTexture.size().width, y: 0, duration: NSTimeInterval(0.01 * groundTexture.size().width))
         var resetGroundSprite = SKAction.moveByX(groundTexture.size().width, y: 0, duration: 0.0)
         var moveGroundSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveGroundSprite, resetGroundSprite]))
@@ -54,10 +54,16 @@ class GameScene: SKScene {
         var skylineTexture = SKTexture(imageNamed:"Skyline")
         skylineTexture.filteringMode = SKTextureFilteringMode.Nearest
         
+        // HAremos que el fondo simule movimiento del Cielo:
+        var moveSkylineSprite = SKAction.moveByX(-skylineTexture.size().width, y: 0, duration: NSTimeInterval(0.01 * skylineTexture.size().width))
+        var resetSkylineSprite = SKAction.moveByX(skylineTexture.size().width, y: 0, duration: 0.0)
+        var moveSkylineSpritesForever = SKAction.repeatActionForever(SKAction.sequence([moveSkylineSprite, resetSkylineSprite]))
+        
         for var i:CGFloat = 0; i < 2 + self.frame.size.width / (skylineTexture.size().width);++i {
             var sprite = SKSpriteNode(texture: skylineTexture)
             sprite.zPosition = -20
             sprite.position = CGPointMake(i * sprite.size.width, sprite.size.height / 2 + groundTexture.size().height)
+            sprite.runAction(moveSkylineSpritesForever)
             self.addChild(sprite)
         }
 
