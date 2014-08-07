@@ -31,6 +31,11 @@ class GameScene: SKScene {
         bird.position = CGPoint(x:self.frame.size.width / 2.0, y:CGRectGetMidY(self.frame))
         bird.runAction(flap)
         
+        // Haremos que el pajaro caiga
+        bird.physicsBody = SKPhysicsBody(circleOfRadius:bird.size.height / 2.0)
+        bird.physicsBody.dynamic = true
+        bird.physicsBody.allowsRotation =  false
+        
         self.addChild(bird)
         
         // Creamos la parte del piso
