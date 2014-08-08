@@ -24,11 +24,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let pipeCategory:UInt32 = 1 << 2
     
     var moving = SKNode()
+    // Trabajaremos en el restar animation
+    var canRestart = false
+    var pipes = SKNode()
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         // IMplementaremos la caida del ave cuando exista alguna colision
         self.addChild(moving)
+        moving.addChild(pipes)
         
         // ----- Esto genera una gravedad a  (mfe)
         self.physicsWorld.gravity = CGVectorMake(0.0, -5.0)
@@ -161,14 +165,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // pipePair.runAction(moveAndRemovePipes) // Creo que esto esta mal
         pipePair.runAction(movePipesAndRemove)
         //self.addChild(pipePair)
-        moving.addChild(pipePair)
+        //moving.addChild(pipePair)
+        pipes.addChild(pipePair)
+    }
+    
+    func resetScene(){
+        bird.position = CGPoint(x: self.frame.size.width / 2.8,y: CGRectGetMidY(self.frame))
+        bird.physicsBody.velocity = CGVectorMake(0, 0)
+        
+        bird.physicsBody.collisionBitMask = wordCategory | pipeCategory
+        bird.speed = 1.0
+        bird.zRotation = 0.0
+        
+        pipes.removeAllChildren()
+        canRestart = false
+        moving.speed = 1
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        // Aqui controla mos los otuch en el screeen
-        bird.physicsBody.velocity = CGVectorMake(0, 0)
-        bird.physicsBody.applyImpulse(CGVectorMake(0, 8))
+        
+        if(moving.speed > 0){
+            // Aqui controla mos los otuch en el screeen
+            bird.physicsBody.velocity = CGVectorMake(0, 0)
+            bird.physicsBody.applyImpulse(CGVectorMake(0, 8))
+        } else if(canRestart) {
+            self.resetScene()
+        }
+
         
         
     }
@@ -189,7 +213,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         // Aqui implementamos la rotacion en si:
-        bird.zRotation = self.clamp(-1, max: 0.5, value: bird.physicsBody.velocity.dy * (bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001))
+        if moving.speed > 0 {
+            bird.zRotation = self.clamp(-1, max: 0.5, value: bird.physicsBody.velocity.dy * (bird.physicsBody.velocity.dy < 0 ? 0.003 : 0.001))
+        }
+        
+        
     }
     
     // Ahora implementamos el contex notificacion delegate
@@ -197,6 +225,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if(moving.speed > 0){
             moving.speed = 0
+            
+            bird.physicsBody.collisionBitMask = wordCategory
+            
+            var rotateBird = SKAction.rotateByAngle(0.01, duration: 0.03)
+            var stopBird = SKAction.runBlock({() in self.killBirdSpeed()})
+            var birdSequence = SKAction.sequence([rotateBird, stopBird])
+            bird.runAction(birdSequence)
             
             self.removeActionForKey("flash")
             var turnBackgroundRed = SKAction.runBlock({() in self.setBackgroundRed()})
@@ -207,9 +242,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // Implementamos el efecto del explosion de fondo con luces
             var sequenceOfActions = SKAction.sequence([turnBackgroundRed, wait, turnBackgroundWhite, wait, turnBackgroundColorSky])
             var repeatSequence = SKAction.repeatAction(sequenceOfActions, count: 4)
-            self.runAction(repeatSequence, withKey: "flash")
+            // Ingresamos aqui el efecto restart
+            var canRestartAction = SKAction.runBlock({() in self.letItRestart()})
+            var groupOfActions = SKAction.group([repeatSequence, canRestartAction])
+            
+            //self.runAction(repeatSequence, withKey: "flash") // comenta esto ara cambiar por el efecto restart
+            
+            self.runAction(groupOfActions, withKey: "flash")
         }
     
+    }
+    
+    func killBirdSpeed(){
+        bird.speed = 0
+        
+    }
+    
+    func letItRestart(){
+        
     }
     
     func setBackgroundRed(){
